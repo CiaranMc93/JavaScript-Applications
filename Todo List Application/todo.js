@@ -9,10 +9,11 @@ function addNewItem(list)
 	list.appendChild(listItem);
 };
 
-var btnNew = document.getElementById("addButton");
+var btnNew = document.getElementById("button");
 
 //Button creates a new list item based on the button click
 btnNew.onClick = function()
 {
+	alert("Got here");
 	addNewItem(document.getElementById("todoList"));
-}
+};
