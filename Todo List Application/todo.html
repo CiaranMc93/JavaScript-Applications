@@ -3,19 +3,23 @@
 <html>
 	<head>
 		<title>Todo List App</title>
-		<script src="todo.js"></script>
 	</head>
-
 <link href="todo.css" rel="stylesheet" type="text/css"/>
 
 <body>
 
 <h1>To-do List</h1>
 
-<p><button id="button">Add New</button></p>
-<ul id="todoList">
-	<li><input type="checkbox"/><span>Create this application</span></li>
-</ul>
+<p>
+	<input type="text" id="textItem">
+		<button id="button" onClick="addNew()">Add New</button>
+	</input>
+</p>
 
+<!-- List for the todo items -->
+
+<ul id="todoList">
+</ul>
+<script src="todo.js"></script>
 </body>
 </html>
