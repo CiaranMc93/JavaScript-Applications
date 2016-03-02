@@ -1,4 +1,5 @@
-//Canvas = DOM element.
-.mainCanvas{
-	background-color: red;
+
+canvas
+{
+	background-color: #808080;
 }
