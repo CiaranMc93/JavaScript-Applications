@@ -8,18 +8,26 @@
 
 <body>
 
-<h1>To-do List</h1>
+<div class="mainContainer">
+	<div class="header">
+		<h1>To-do List</h1>
+	</div>
 
-<p>
-	<input type="text" id="textItem">
-		<button id="button" onClick="addNew()">Add New</button>
-	</input>
-</p>
+	<div class="todoList">
 
-<!-- List for the todo items -->
+		<p>
+			<input type="text" id="textItem">
+				<button id="button" onClick="addNew()">Add New</button>
+			</input>
+		</p>
 
-<ul id="todoList">
-</ul>
+		<!-- List for the todo items -->
+
+		<ul id="todoList">
+		</ul>
+	</div>
+	
+</div>
 <script src="todo.js"></script>
 </body>
 </html>
