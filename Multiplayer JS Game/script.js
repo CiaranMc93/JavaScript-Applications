@@ -25,14 +25,14 @@ document.onmousemove = function(mouse)
 	var mouseX = mouse.clientX - document.getElementById('canvas').getBoundingClientRect().left;
 	var mouseY = mouse.clientY - document.getElementById('canvas').getBoundingClientRect().top;
 
-	if(mouseX < player.width)
-		mouseX = 0;
-	if(mouseX > WEIGHT)
-		mouseX = WEIGHT;
-	if(mouseY < 0)
-		mouseY = 0;
-	if(mouseY > HEIGHT)
-		mouseY = HEIGHT;
+	if(mouseX < player.width/2)
+		mouseX = player.width/2;
+	if(mouseX > WEIGHT - player.width/2)
+		mouseX = WEIGHT - player.width/2;
+	if(mouseY < player.height/2)
+		mouseY = player.height/2;
+	if(mouseY > HEIGHT - player.height/2)
+		mouseY = HEIGHT - player.height/2;
 
 	player.x = mouseX;
 	player.y = mouseY;
