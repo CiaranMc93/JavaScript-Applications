@@ -8,6 +8,8 @@ var WEIGHT = 500;
 var message = 'Bouncing';
 var timeWhenGameStarted = Date.now();
 
+var frameCount = 0;
+
 var player = {
 	x:150,
 	spdX:30,
@@ -43,6 +45,13 @@ update = function ()
 {
 	canvas.clearRect(0,0,WEIGHT,HEIGHT);
 
+	frameCount++;
+
+	if(frameCount % 100 === 0) //4 seconds
+	{
+		randomGeneration();
+	}
+
 	for(var key in enemyList)
 	{
 		updateEntity(enemyList[key]);
@@ -53,21 +62,36 @@ update = function ()
 		{
 			//decrease the health
 			player.hp = player.hp - 1;
-
-			if(player.hp <= 0)
-			{
-				//count how long the player survived then reset the health and the timer
-				var surviveCount = Date.now() - timeWhenGameStarted;
-				console.log("You Lost and survived for " + surviveCount + " ms.");
-				timeWhenGameStarted = Date.now();
-				player.hp = 10;
-			}
 		}
+	}
+
+	if(player.hp <= 0)
+	{
+		//count how long the player survived then reset the health and the timer
+		var surviveCount = Date.now() - timeWhenGameStarted;
+		console.log("You Lost and survived for " + surviveCount + " ms.");
+		
+		startNewGame();
 	}
 
 	drawEntity(player);
 	canvas.fillStyle = "red";
 	canvas.fillText(player.hp + " Hp",0,30);
+}
+
+//reset the game
+startNewGame = function()
+{
+	player.hp = 10;
+	timeWhenGameStarted = Date.now();
+	frameCount = 0;
+	enemyList = {};
+
+	//create new enemies
+	randomGeneration();
+	randomGeneration();
+	randomGeneration();
+	randomGeneration();
 }
 
 //set the update speed
