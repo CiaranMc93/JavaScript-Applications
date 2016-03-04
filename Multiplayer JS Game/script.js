@@ -9,6 +9,7 @@ var message = 'Bouncing';
 var timeWhenGameStarted = Date.now();
 
 var frameCount = 0;
+var score = 0;
 
 var player = {
 	x:150,
@@ -46,12 +47,87 @@ update = function ()
 	canvas.clearRect(0,0,WEIGHT,HEIGHT);
 
 	frameCount++;
+	score++;
 
+	//create a new random enemy every 4 seconds
 	if(frameCount % 100 === 0) //4 seconds
 	{
 		randomGeneration();
 	}
 
+	//create a new random bullet every 2 seconds
+	if(frameCount % 50 === 0) //2 seconds
+	{
+		randomBulletGeneration();
+	}
+
+	//draw the bullets
+	//for each upgrade in the list
+	for(var key in bulletList)
+	{
+		//get each upgrade
+		updateEntity(bulletList[key]);
+
+		//remove bullet flag
+		var toRemove = false;
+
+		//count bullet timer
+		bulletList[key].timer++;
+
+		//if the timer is 100 then delete the bullet
+		if(bulletList[key].timer > 100)
+		{
+			toRemove = true;
+		}
+
+		//if a bullet collides with an enemy
+		for(var key2 in enemyList)
+		{
+			var collision = testCollision(bulletList[key],enemyList[key2]);
+
+			if(collision)
+			{
+				//remove bullet and enemy
+				delete bulletList[key];
+				delete enemyList[key2];
+				//increment score
+				score += 500;
+				break;
+			}
+		}//end for
+
+		//if remove bullet is true
+		if(toRemove)
+		{
+			delete bulletList[key];
+		}
+	}//end for
+
+	//create random upgrades every 6 seconds
+	if(frameCount % 150 === 0) //4 seconds
+	{
+		randomUpgradeGeneration();
+	}
+
+	//for each upgrade in the list
+	for(var key in upgradeList)
+	{
+		//get each upgrade
+		updateEntity(upgradeList[key]);
+
+		//test the collisions
+		var collision = testCollision(player,upgradeList[key]);
+
+		if(collision)
+		{
+			//decrease the health
+			score += 1000;
+			//remove upgrade from the list
+			delete upgradeList[key];
+		}
+	}
+
+	//for each enemy 
 	for(var key in enemyList)
 	{
 		updateEntity(enemyList[key]);
@@ -77,6 +153,7 @@ update = function ()
 	drawEntity(player);
 	canvas.fillStyle = "red";
 	canvas.fillText(player.hp + " Hp",0,30);
+	canvas.fillText("Score: " + score,200,30);
 }
 
 //reset the game
@@ -86,6 +163,9 @@ startNewGame = function()
 	timeWhenGameStarted = Date.now();
 	frameCount = 0;
 	enemyList = {};
+	upgradeList = {};
+	bulletList = {};
+	score = 0;
 
 	//create new enemies
 	randomGeneration();
