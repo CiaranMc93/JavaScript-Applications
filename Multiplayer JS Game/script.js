@@ -120,6 +120,14 @@ update = function ()
 
 		if(collision)
 		{
+			if(upgradeList[key].category === 'low')
+			{
+				score += 1000;
+			}
+			else
+			{
+				score += 5000;
+			}
 			//decrease the health
 			score += 1000;
 			//remove upgrade from the list

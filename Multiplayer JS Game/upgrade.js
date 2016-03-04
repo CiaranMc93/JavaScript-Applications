@@ -2,7 +2,7 @@
 upgradeList = {};
 
 //enemy constructor
-Upgrade = function (id,x,y,spdX,spdY,width,height)
+Upgrade = function (id,x,y,spdX,spdY,width,height,category)
 {
 
 	var upgrade = {
@@ -14,7 +14,8 @@ Upgrade = function (id,x,y,spdX,spdY,width,height)
 	id:id,
 	width:width,
 	height:height,
-	color:'orange'
+	color:'orange',
+	category:category
 	}
 
 	upgradeList[id] = upgrade;
@@ -30,7 +31,17 @@ randomUpgradeGeneration = function()
 	var spdX= 0;
 	var spdY = 0;
 
+	//high or low category
+	if(Math.random()<0.5)
+	{
+		var category = 'low';
+	}
+	else
+	{
+		var category = 'high';
+	}
+
 	//generate enemy
-	Upgrade(id,x,y,spdX,spdY,width,height);
+	Upgrade(id,x,y,spdX,spdY,width,height,category);
 
 }
