@@ -20,7 +20,8 @@ var player = {
 	hp: 10,
 	width:20,
 	height:20,
-	color:'green'
+	color:'green',
+	attackSpd:1,
 }
 
 document.onmousemove = function(mouse)
@@ -56,7 +57,7 @@ update = function ()
 	}
 
 	//create a new random bullet every 2 seconds
-	if(frameCount % 50 === 0) //2 seconds
+	if(frameCount % Math.round(25/player.attackSpd) === 0) //2 seconds
 	{
 		randomBulletGeneration();
 	}
@@ -120,14 +121,16 @@ update = function ()
 
 		if(collision)
 		{
-			if(upgradeList[key].category === 'low')
+			//different category of upgrade is defined
+			if(upgradeList[key].category === 'score')
 			{
 				score += 1000;
 			}
 			else
 			{
-				score += 5000;
+				player.attackSpd += 3;
 			}
+
 			//decrease the health
 			score += 1000;
 			//remove upgrade from the list
