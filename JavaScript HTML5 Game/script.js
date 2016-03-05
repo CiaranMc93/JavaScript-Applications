@@ -42,6 +42,18 @@ document.onmousemove = function(mouse)
 	player.y = mouseY;
 }
 
+
+//mouse click
+document.onclick = function(mouse)
+{
+	if(counter > 25)
+	{
+		randomBulletGeneration();
+		counter = 0;
+	}
+}
+counter = 0;
+
 //update the canvas
 update = function ()
 {
@@ -56,10 +68,13 @@ update = function ()
 		randomGeneration();
 	}
 
+	counter += player.attackSpd;
+
 	//create a new random bullet every 2 seconds
-	if(frameCount % Math.round(25/player.attackSpd) === 0) //2 seconds
+	if(counter > 25) //2 seconds
 	{
 		randomBulletGeneration();
+		counter = 0;
 	}
 
 	//draw the bullets
