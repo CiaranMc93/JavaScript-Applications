@@ -160,7 +160,7 @@ update = function ()
 	drawEntity(player);
 	canvas.fillStyle = "red";
 	canvas.fillText(player.hp + " Hp",0,30);
-	canvas.fillText("Score: " + score,200,30);
+	canvas.fillText("Score: " + score,WEIGHT-185,30);
 }
 
 //reset the game
@@ -182,4 +182,4 @@ startNewGame = function()
 }
 
 //set the update speed
-setInterval(update,40);
+setInterval(update,50);

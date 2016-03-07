@@ -36,6 +36,7 @@ document.onkeyup = function(event)
 	}
 }
 
+//updates the players position on the canvas
 updatePlayerPosition = function()
 {
 	if(player.moveRight)
