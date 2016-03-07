@@ -31,8 +31,8 @@ randomBulletGeneration = function()
 	//get an angle between 0 and 360
 	var angle = Math.random()*360;
 	//change theangle into radians so it can be calculated correctly
-	var spdX= Math.cos(angle/180*Math.PI)*7;
-	var spdY = Math.cos(angle/180*Math.PI)*7;
+	var spdX= Math.cos(angle/180*Math.PI)*5;
+	var spdY = Math.cos(angle/180*Math.PI)*5;
 
 	//generate enemy
 	Bullets(id,x,y,spdX,spdY,width,height);

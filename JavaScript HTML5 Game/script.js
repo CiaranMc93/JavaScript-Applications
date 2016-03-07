@@ -22,36 +22,23 @@ var player = {
 	height:20,
 	color:'green',
 	attackSpd:1,
+	counter:0,
+	moveUp:false,
+	moveDown:false,
+	moveRight:false,
+	moveLeft:false,
 }
-
-document.onmousemove = function(mouse)
-{
-	var mouseX = mouse.clientX - document.getElementById('canvas').getBoundingClientRect().left;
-	var mouseY = mouse.clientY - document.getElementById('canvas').getBoundingClientRect().top;
-
-	if(mouseX < player.width/2)
-		mouseX = player.width/2;
-	if(mouseX > WEIGHT - player.width/2)
-		mouseX = WEIGHT - player.width/2;
-	if(mouseY < player.height/2)
-		mouseY = player.height/2;
-	if(mouseY > HEIGHT - player.height/2)
-		mouseY = HEIGHT - player.height/2;
-
-	player.x = mouseX;
-	player.y = mouseY;
-}
-
 
 //mouse click
 document.onclick = function(mouse)
 {
-	if(counter > 25)
+	if(player.counter > 25)
 	{
 		randomBulletGeneration();
 		counter = 0;
 	}
 }
+
 counter = 0;
 
 //update the canvas
@@ -68,14 +55,7 @@ update = function ()
 		randomGeneration();
 	}
 
-	counter += player.attackSpd;
-
-	//create a new random bullet every 2 seconds
-	if(counter > 25) //2 seconds
-	{
-		randomBulletGeneration();
-		counter = 0;
-	}
+	player.counter += player.attackSpd;
 
 	//draw the bullets
 	//for each upgrade in the list
@@ -176,6 +156,7 @@ update = function ()
 		startNewGame();
 	}
 
+	updatePlayerPosition();
 	drawEntity(player);
 	canvas.fillStyle = "red";
 	canvas.fillText(player.hp + " Hp",0,30);
