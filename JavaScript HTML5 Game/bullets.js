@@ -5,20 +5,22 @@ bulletList = {};
 Bullets = function (id,x,y,spdX,spdY,width,height)
 {
 
-	var bullet = {
-	x:x,
-	spdX:spdX,
-	y:y,
-	spdY:spdY,
-	name:'B',
-	id:id,
-	width:width,
-	height:height,
-	color:'purple',
-	timer:0
+	self = {
+		type:'bullet',
+		x:x,
+		spdX:spdX,
+		y:y,
+		spdY:spdY,
+		name:'B',
+		width:width,
+		height:height,
+		color:'purple',
 	}
+	
+	self.timer = 0;
+	
 
-	bulletList[id] = bullet;
+	bulletList[id] = self;
 }
 
 randomBulletGeneration = function(entity,overwriteAngle)

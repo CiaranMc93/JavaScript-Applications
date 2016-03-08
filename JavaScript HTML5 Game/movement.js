@@ -36,52 +36,6 @@ document.onkeyup = function(event)
 	}
 }
 
-//updates the players position on the canvas
-updatePlayerPosition = function()
-{
-	if(player.moveRight)
-	{
-		player.x += 10;
-	}
-	if(player.moveLeft)
-	{
-		player.x -= 10;
-	}
-	if(player.moveDown)
-	{
-		player.y += 10;
-	}
-	if(player.moveUp)
-	{
-		player.y -= 10;
-	}
-
-	//is the position valid?
-	if(player.x < player.width/2)
-		player.x = player.width/2;
-	if(player.x > WEIGHT - player.width/2)
-		player.x = WEIGHT - player.width/2;
-	if(player.y < player.height/2)
-		player.y = player.height/2;
-	if(player.y > HEIGHT - player.height/2)
-		player.y = HEIGHT - player.height/2;
-}
-
-document.oncontextmenu = function(mouse)
-{
-	if(player.counter > 50)
-	{
-		for(var i = 0; i <= 360;i++)
-		{
-			//attack from all directions
-			randomBulletGeneration(player,i);
-		}
-		player.attackCounter = 0;
-	}
-
-	mouse.preventDefault();
-}
-
 document.onmousemove = function(mouse)
 {
 	

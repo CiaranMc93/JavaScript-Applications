@@ -5,20 +5,21 @@ upgradeList = {};
 Upgrade = function (id,x,y,spdX,spdY,width,height,category,color)
 {
 
-	var upgrade = {
-	x:x,
-	spdX:spdX,
-	y:y,
-	spdY:spdY,
-	name:'E',
-	id:id,
-	width:width,
-	height:height,
-	color:color,
-	category:category
+	self = {
+		type:'upgrade',
+		x:x,
+		spdX:spdX,
+		y:y,
+		spdY:spdY,
+		name:'E',
+		width:width,
+		height:height,
+		color:color,
 	}
+	self.category = category;
+	
 
-	upgradeList[id] = upgrade;
+	upgradeList[id] = self;
 }
 
 randomUpgradeGeneration = function()

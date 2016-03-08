@@ -11,33 +11,39 @@ var timeWhenGameStarted = Date.now();
 var frameCount = 0;
 var score = 0;
 
-var player = {
-	x:150,
-	spdX:30,
-	y:340,
-	spdY:5,
-	name:'P',
-	hp: 10,
-	width:20,
-	height:20,
-	color:'green',
-	attackSpd:1,
-	counter:0,
-	moveUp:false,
-	moveDown:false,
-	moveRight:false,
-	moveLeft:false,
-	aimAngle:0,
+var player;
+
+createPlayer = function()
+{
+	self = {
+		type:'player',
+		x:150,
+		spdX:30,
+		y:340,
+		spdY:5,
+		name:'P',
+		hp: 10,
+		width:20,
+		height:20,
+		color:'green',
+	}
+
+	self.attackSpd = 1;
+	self.counter = 0;
+	self.moveUp = false;
+	self.moveDown = false;
+	self.moveRight = false;
+	self.moveLeft = false;
+	self.aimAngle = 0;
+
+	player = self;
+	
 }
 
 //mouse click
 document.onclick = function(mouse)
 {
-	if(player.counter > 25)
-	{
-		randomBulletGeneration(player);
-		counter = 0;
-	}
+	randomBulletGeneration(player);
 }
 
 counter = 0;
@@ -157,11 +163,16 @@ update = function ()
 		startNewGame();
 	}
 
-	updatePlayerPosition();
-	drawEntity(player);
+	updateEntity(player);
 	canvas.fillStyle = "red";
 	canvas.fillText(player.hp + " Hp",0,30);
 	canvas.fillText("Score: " + score,WEIGHT-185,30);
+}
+
+//on right click
+document.oncontextmenu = function(mouse)
+{
+	performSpecialAttack(player);
 }
 
 //reset the game
@@ -181,6 +192,8 @@ startNewGame = function()
 	randomGeneration();
 	randomGeneration();
 }
+
+createPlayer();
 
 //set the update speed
 setInterval(update,50);

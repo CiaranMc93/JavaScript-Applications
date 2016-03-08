@@ -5,20 +5,23 @@ var enemyList = {};
 Enemy = function (id,x,y,spdX,spdY,width,height)
 {
 
-	var enemy = {
-	x:x,
-	spdX:spdX,
-	y:y,
-	spdY:spdY,
-	name:'E',
-	id:id,
-	width:width,
-	height:height,
-	color:'black',
-	aimAngle:0,
+	self = {
+		type:'enemy',
+		x:x,
+		spdX:spdX,
+		y:y,
+		spdY:spdY,
+		name:'E',
+		width:width,
+		height:height,
+		color:'black',
 	}
+	self.aimAngle = 0;
+	self.attackSpd = 1;
+	self.attackCounter = 0;
+	
 
-	enemyList[id] = enemy;
+	enemyList[id] = self;
 }
 
 //call enemy function
