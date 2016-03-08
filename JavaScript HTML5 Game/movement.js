@@ -67,12 +67,34 @@ updatePlayerPosition = function()
 		player.y = HEIGHT - player.height/2;
 }
 
+document.oncontextmenu = function(mouse)
+{
+	if(player.counter > 50)
+	{
+		for(var i = 0; i <= 360;i++)
+		{
+			//attack from all directions
+			randomBulletGeneration(player,i);
+		}
+		player.attackCounter = 0;
+	}
+
+	mouse.preventDefault();
+}
+
 document.onmousemove = function(mouse)
 {
-	/*
+	
 	var mouseX = mouse.clientX - document.getElementById('canvas').getBoundingClientRect().left;
 	var mouseY = mouse.clientY - document.getElementById('canvas').getBoundingClientRect().top;
 
+	//position relative to the player from the mouse instead of the origin
+	mouseX -= player.x;
+	mouseY -= player.y;
+
+	player.aimAngle = Math.atan2(mouseX,mouseY);
+
+	/*
 	if(mouseX < player.width/2)
 		mouseX = player.width/2;
 	if(mouseX > WEIGHT - player.width/2)

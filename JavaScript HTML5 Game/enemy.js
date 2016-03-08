@@ -14,7 +14,8 @@ Enemy = function (id,x,y,spdX,spdY,width,height)
 	id:id,
 	width:width,
 	height:height,
-	color:'black'
+	color:'black',
+	aimAngle:0,
 	}
 
 	enemyList[id] = enemy;

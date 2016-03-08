@@ -27,6 +27,7 @@ var player = {
 	moveDown:false,
 	moveRight:false,
 	moveLeft:false,
+	aimAngle:0,
 }
 
 //mouse click
@@ -34,7 +35,7 @@ document.onclick = function(mouse)
 {
 	if(player.counter > 25)
 	{
-		randomBulletGeneration();
+		randomBulletGeneration(player);
 		counter = 0;
 	}
 }
