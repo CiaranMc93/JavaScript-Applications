@@ -5,20 +5,9 @@ bulletList = {};
 Bullets = function (id,x,y,spdX,spdY,width,height)
 {
 
-	self = {
-		type:'bullet',
-		x:x,
-		spdX:spdX,
-		y:y,
-		spdY:spdY,
-		name:'B',
-		width:width,
-		height:height,
-		color:'purple',
-	}
-	
+	var self = Entity("bullet",id,x,y,spdX,spdY,width,height,"purple");
+
 	self.timer = 0;
-	
 
 	bulletList[id] = self;
 }

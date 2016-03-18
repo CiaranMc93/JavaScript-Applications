@@ -5,19 +5,9 @@ upgradeList = {};
 Upgrade = function (id,x,y,spdX,spdY,width,height,category,color)
 {
 
-	self = {
-		type:'upgrade',
-		x:x,
-		spdX:spdX,
-		y:y,
-		spdY:spdY,
-		name:'E',
-		width:width,
-		height:height,
-		color:color,
-	}
-	self.category = category;
+	var self = Entity("upgrade",id,x,y,spdX,spdY,width,height,color);
 	
+	self.category = category;
 
 	upgradeList[id] = self;
 }

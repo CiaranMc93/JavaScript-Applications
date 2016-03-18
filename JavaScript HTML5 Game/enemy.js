@@ -5,17 +5,8 @@ var enemyList = {};
 Enemy = function (id,x,y,spdX,spdY,width,height)
 {
 
-	self = {
-		type:'enemy',
-		x:x,
-		spdX:spdX,
-		y:y,
-		spdY:spdY,
-		name:'E',
-		width:width,
-		height:height,
-		color:'black',
-	}
+	var self = Entity("enemy",id,x,y,spdX,spdY,width,height,"black");
+
 	self.aimAngle = 0;
 	self.attackSpd = 1;
 	self.attackCounter = 0;

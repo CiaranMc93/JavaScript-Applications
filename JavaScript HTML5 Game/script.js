@@ -13,22 +13,124 @@ var score = 0;
 
 var player;
 
-createPlayer = function()
+//enemy constructor
+Entity = function (type,id,x,y,spdX,spdY,width,height,color)
 {
-	self = {
-		type:'player',
-		x:150,
-		spdX:30,
-		y:340,
-		spdY:5,
-		name:'P',
-		hp: 10,
-		width:20,
-		height:20,
-		color:'green',
+
+	var self = {
+		type:type,
+		x:x,
+		spdX:spdX,
+		y:y,
+		spdY:spdY,
+		width:width,
+		height:height,
+		color:color,
 	}
 
+	self.update = function()
+	{
+		self.updateEntityPosition();
+		self.drawEntity();
+	}
+
+	self.updateEntityPosition = function()
+	{
+
+		if(self.type === 'player')
+		{
+			if(self.moveRight)
+			{
+				self.x += 10;
+			}
+			if(self.moveLeft)
+			{
+				self.x -= 10;
+			}
+			if(self.moveDown)
+			{
+				self.y += 10;
+			}
+			if(self.moveUp)
+			{
+				self.y -= 10;
+			}
+
+			//is the position valid?
+			if(self.x < self.width/2)
+				self.x = self.width/2;
+			if(self.x > WEIGHT - self.width/2)
+				self.x = WEIGHT - self.width/2;
+			if(self.y < self.height/2)
+				self.y = self.height/2;
+			if(self.y > HEIGHT - self.height/2)
+				self.y = HEIGHT - self.height/2;
+			}
+		else
+		{
+			self.x += self.spdX;
+			self.y += self.spdY;
+			
+			//bounce off the x axis
+			if(self.x < 0 || self.x > WEIGHT)
+			{
+				self.spdX = -self.spdX;
+			}
+
+			//bounce off the y axis
+			if(self.y < 0 || self.y > HEIGHT)
+			{
+				self.spdY = -self.spdY;
+			}
+		}
+	}
+
+	self.drawEntity = function()
+	{
+		canvas.fillStyle = self.color;
+		canvas.fillRect(self.x-self.width/2,self.y-self.height/2,self.width,self.height);
+	}
+
+	//call the functions to update the self
+	self.update();
+
+	return self;
+	
+}
+
+
+
+performAttack = function(entity)
+{
+	if(entity.counter > 25)
+	{
+		randomBulletGeneration(entity);
+		counter = 0;
+	}
+}
+
+performSpecialAttack = function(entity)
+{
+	if(entity.counter > 50)
+	{
+		for(var i = 0; i <= 360;i++)
+		{
+			//attack from all directions
+			randomBulletGeneration(entity,i);
+		}
+		
+		entity.attackCounter = 0;
+	}
+
+	mouse.preventDefault();
+}
+
+createPlayer = function()
+{
+	var self = Entity("player","myID",50,40,30,5,20,20,"green");
+
 	self.attackSpd = 1;
+	self.hp = 10;
 	self.counter = 0;
 	self.moveUp = false;
 	self.moveDown = false;
@@ -41,7 +143,7 @@ createPlayer = function()
 }
 
 //mouse click
-document.onclick = function(mouse)
+document.onclick = function()
 {
 	randomBulletGeneration(player);
 }
@@ -69,7 +171,7 @@ update = function ()
 	for(var key in bulletList)
 	{
 		//get each upgrade
-		updateEntity(bulletList[key]);
+		bulletList[key].update();
 
 		//remove bullet flag
 		var toRemove = false;
@@ -116,7 +218,7 @@ update = function ()
 	for(var key in upgradeList)
 	{
 		//get each upgrade
-		updateEntity(upgradeList[key]);
+		upgradeList[key].update();
 
 		//test the collisions
 		var collision = testCollision(player,upgradeList[key]);
@@ -143,7 +245,7 @@ update = function ()
 	//for each enemy 
 	for(var key in enemyList)
 	{
-		updateEntity(enemyList[key]);
+		enemyList[key].update();
 
 		var collision = testCollision(player,enemyList[key]);
 
@@ -163,7 +265,7 @@ update = function ()
 		startNewGame();
 	}
 
-	updateEntity(player);
+	player.update();
 	canvas.fillStyle = "red";
 	canvas.fillText(player.hp + " Hp",0,30);
 	canvas.fillText("Score: " + score,WEIGHT-185,30);
