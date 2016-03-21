@@ -5,7 +5,7 @@ var enemyList = {};
 Enemy = function (id,x,y,spdX,spdY,width,height)
 {
 
-	var self = Entity("enemy",id,x,y,spdX,spdY,width,height,"black");
+	var self = Actor("enemy",id,x,y,spdX,spdY,width,height,"black",10,1);
 
 	self.aimAngle = 0;
 	self.attackSpd = 1;

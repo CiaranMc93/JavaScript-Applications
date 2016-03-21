@@ -37,51 +37,19 @@ Entity = function (type,id,x,y,spdX,spdY,width,height,color)
 	self.updateEntityPosition = function()
 	{
 
-		if(self.type === 'player')
+		self.x += self.spdX;
+		self.y += self.spdY;
+		
+		//bounce off the x axis
+		if(self.x < 0 || self.x > WEIGHT)
 		{
-			if(self.moveRight)
-			{
-				self.x += 10;
-			}
-			if(self.moveLeft)
-			{
-				self.x -= 10;
-			}
-			if(self.moveDown)
-			{
-				self.y += 10;
-			}
-			if(self.moveUp)
-			{
-				self.y -= 10;
-			}
+			self.spdX = -self.spdX;
+		}
 
-			//is the position valid?
-			if(self.x < self.width/2)
-				self.x = self.width/2;
-			if(self.x > WEIGHT - self.width/2)
-				self.x = WEIGHT - self.width/2;
-			if(self.y < self.height/2)
-				self.y = self.height/2;
-			if(self.y > HEIGHT - self.height/2)
-				self.y = HEIGHT - self.height/2;
-			}
-		else
+		//bounce off the y axis
+		if(self.y < 0 || self.y > HEIGHT)
 		{
-			self.x += self.spdX;
-			self.y += self.spdY;
-			
-			//bounce off the x axis
-			if(self.x < 0 || self.x > WEIGHT)
-			{
-				self.spdX = -self.spdX;
-			}
-
-			//bounce off the y axis
-			if(self.y < 0 || self.y > HEIGHT)
-			{
-				self.spdY = -self.spdY;
-			}
+			self.spdY = -self.spdY;
 		}
 	}
 
@@ -98,49 +66,94 @@ Entity = function (type,id,x,y,spdX,spdY,width,height,color)
 	
 }
 
-
-
-performAttack = function(entity)
+Actor = function(type,id,x,y,spdX,spdY,width,height,color,hp,attackSpd)
 {
-	if(entity.counter > 25)
+	var self = Entity(type,id,x,y,spdX,spdY,width,height,color);
+
+	//save content of update before calling it
+	var super_update = self.update;
+
+	self.update = function()
 	{
-		randomBulletGeneration(entity);
-		counter = 0;
+		super_update();
+		self.attackCounter += self.attackSpd;
 	}
-}
 
-performSpecialAttack = function(entity)
-{
-	if(entity.counter > 50)
+	self.performAttack = function()
 	{
-		for(var i = 0; i <= 360;i++)
+		if(self.counter > 25)
 		{
-			//attack from all directions
-			randomBulletGeneration(entity,i);
+			randomBulletGeneration(self);
+			counter = 0;
 		}
-		
-		entity.attackCounter = 0;
 	}
 
-	mouse.preventDefault();
+	self.performSpecialAttack = function()
+	{
+		if(self.counter > 50)
+		{
+			for(var i = 0; i <= 360;i++)
+			{
+				//attack from all directions
+				randomBulletGeneration(self,i);
+			}
+			
+			self.attackCounter = 0;
+		}
+
+		mouse.preventDefault();
+	}
+
+	self.attackSpd = attackSpd;
+	self.hp = hp;
+	self.counter = 0;
+	self.aimAngle = 0;
+
+	return self;
 }
 
-createPlayer = function()
+Player = function()
 {
-	var self = Entity("player","myID",50,40,30,5,20,20,"green");
+	var self = Actor("player","myID",50,40,30,5,20,20,"green",10,1);
 
-	self.attackSpd = 1;
-	self.hp = 10;
-	self.counter = 0;
+	self.updateEntityPosition = function()
+	{
+		if(self.moveRight)
+		{
+			self.x += 10;
+		}
+		if(self.moveLeft)
+		{
+			self.x -= 10;
+		}
+		if(self.moveDown)
+		{
+			self.y += 10;
+		}
+		if(self.moveUp)
+		{
+			self.y -= 10;
+		}
+
+		//is the position valid?
+		if(self.x < self.width/2)
+			self.x = self.width/2;
+		if(self.x > WEIGHT - self.width/2)
+			self.x = WEIGHT - self.width/2;
+		if(self.y < self.height/2)
+			self.y = self.height/2;
+		if(self.y > HEIGHT - self.height/2)
+			self.y = HEIGHT - self.height/2;
+	}
+
 	self.moveUp = false;
 	self.moveDown = false;
 	self.moveRight = false;
 	self.moveLeft = false;
-	self.aimAngle = 0;
 
-	player = self;
-	
+	return self;
 }
+
 
 //mouse click
 document.onclick = function()
@@ -266,6 +279,7 @@ update = function ()
 	}
 
 	player.update();
+
 	canvas.fillStyle = "red";
 	canvas.fillText(player.hp + " Hp",0,30);
 	canvas.fillText("Score: " + score,WEIGHT-185,30);
@@ -295,7 +309,7 @@ startNewGame = function()
 	randomGeneration();
 }
 
-createPlayer();
+player = Player();
 
 //set the update speed
 setInterval(update,50);
