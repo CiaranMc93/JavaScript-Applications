@@ -5,7 +5,7 @@ bulletList = {};
 Bullets = function (id,x,y,spdX,spdY,width,height)
 {
 
-	var self = Entity("bullet",id,x,y,spdX,spdY,width,height,"purple");
+	var self = Entity("bullet",id,x,y,spdX,spdY,width,height,image.bullet);
 
 	self.timer = 0;
 
