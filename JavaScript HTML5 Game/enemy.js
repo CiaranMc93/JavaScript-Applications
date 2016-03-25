@@ -21,8 +21,8 @@ randomGeneration = function()
 {
 	var x = Math.random()*WEIGHT;
 	var y = Math.random()*HEIGHT;
-	var height = 10 + Math.random()*30;
-	var width = 10 + Math.random()*30;
+	var height = 55;
+	var width = 55;
 	var id = Math.random();
 	var spdX = 5 + Math.random()* 5;
 	var spdY = 5 + Math.random()* 5;

@@ -18,8 +18,12 @@ var image = {};
 image.player = new Image();
 image.player.src = "../images/player.png";
 
+
+image.map = new Image();
+image.map.src = "../images/gameMap.png";
+
 image.enemy = new Image();
-image.enemy.src = "../images/player.png";
+image.enemy.src = "../images/enemy.png";
 
 image.bullet = new Image();
 image.bullet.src = "../images/bullet.png";
@@ -77,7 +81,7 @@ Entity = function (type,id,x,y,spdX,spdY,width,height,image)
 		var x = self.x-self.width/2;
 		var y = self.y-self.height/2;
 
-		canvas.drawImage(self.image,x,y);
+		canvas.drawImage(self.image,0,0,self.image.width,self.image.height,x,y,self.width,self.height);
 		
 		canvas.fillStyle = self.image;
 	}
@@ -124,7 +128,6 @@ Actor = function(type,id,x,y,spdX,spdY,width,height,image,hp,attackSpd)
 			self.attackCounter = 0;
 		}
 
-		mouse.preventDefault();
 	}
 
 	self.attackSpd = attackSpd;
@@ -137,7 +140,7 @@ Actor = function(type,id,x,y,spdX,spdY,width,height,image,hp,attackSpd)
 
 Player = function()
 {
-	var self = Actor("player","myID",50,40,30,5,20,20,image.player,10,1);
+	var self = Actor("player","myID",50,40,30,5,50,50,image.player,10,1);
 
 	self.updateEntityPosition = function()
 	{
@@ -190,6 +193,9 @@ counter = 0;
 update = function ()
 {
 	canvas.clearRect(0,0,WEIGHT,HEIGHT);
+
+	//draw map
+	drawMap();
 
 	frameCount++;
 	score++;
@@ -309,9 +315,9 @@ update = function ()
 }
 
 //on right click
-document.oncontextmenu = function(mouse)
+document.oncontextmenu = function()
 {
-	performSpecialAttack(player);
+	player.performSpecialAttack();
 }
 
 //reset the game
@@ -336,3 +342,9 @@ player = Player();
 
 //set the update speed
 setInterval(update,50);
+
+//draw the game map
+drawMap = function()
+{
+	canvas.drawImage(image.map,0,0);
+}
