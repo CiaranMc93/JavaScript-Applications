@@ -1,0 +1,77 @@
+<!DOCTYPE <!DOCTYPE html>
+<html>
+<head>
+	<title>List App</title>
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+
+	<script>
+	    $(document).bind('mobileinit',function(){
+	        $.mobile.changePage.defaults.changeHash = false;
+	        $.mobile.hashListeningEnabled = false;
+	        $.mobile.pushStateEnabled = false;
+	    });
+	</script> 
+
+	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+</head>
+<body>
+<div id="home" data-role="page">
+	<header data-role="header">
+		<h1>
+			List App
+		</h1>
+	</header>
+	<article data-role="content">
+		<!-- Data tag adds new information to existing elements -->
+		<!-- Adding listview and filter (creates a search box to filter out listview items) -->
+		<ul data-role="listview" data-filter="true">
+			<li>
+				<a href="#location">
+					<h1>Location</h1>
+					<img src="../images/location.png">
+					<p>Location is important in any application</p>
+				</a>
+			</li>
+			<li>
+				<a href="#money">
+					<h1>Money</h1>
+					<img src="../images/money.png">
+					<p>Money is important in any application</p>
+				</a>
+			</li>
+		</ul>
+	</article>
+	<footer data-role="footer" data-position="fixed">
+		<nav data-role="navbar">
+			<ul>
+				<li><a href="#" data-icon="home">Home</a></li>
+				<li><a href="#" data-icon="grid">Photos</a></li>
+				<li><a href="#" data-icon="info">Info</a></li>
+			</ul>
+		</nav>
+	</footer>
+</div> <!-- End of page 1 -->
+
+<div id="location" data-role="page">
+	<header data-role="header">
+		<h1>
+			Location
+		</h1>
+		<a href="#home">Home</a>
+	</header>
+</div> <!-- End of page 2 -->
+
+<div id="money" data-role="page">
+	<header data-role="header">
+		<h1>
+			Money
+		</h1>
+	</header>
+</div> <!-- End of page 3 -->
+
+</body>
+</html>
