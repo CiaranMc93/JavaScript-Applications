@@ -1,4 +1,40 @@
-var canvas = document.getElementById("canvas").getContext("2d");
+window.onload = function()
+{
+    var canvas = document.getElementById("canvas");
+    
+    var context = canvas.getContext("2d");
+    
+    context.fillRect(50,50,300,300);
+}
+
+/*
+function drawCheckeredBackground(can, nRow, nCol) {
+    var ctx = can.getContext("2d");
+    var w = can.width;
+    var h = can.height;
+
+    nRow = nRow || 10;    // default number of rows
+    nCol = nCol || 10;    // default number of columns
+
+    w /= nCol;            // width of a block
+    h /= nRow;            // height of a block
+
+    for (var i = 0; i < nRow; ++i) 
+    {
+        for (var j = 0, col = nCol / 2; j < col; ++j) 
+        {
+            //logic to draw the tiles
+            //shifting the x co-ordinate of each block every other row
+            ctx.rect(2 * j * w + (i % 2 ? 0 : w), i * h, w, h);
+        }
+    }
+
+    ctx.fill();
+}
+
+var canvas = document.getElementById("canvas");
+
+drawCheckeredBackground(canvas);
 
 canvas.font = ("30px Arial");
 
@@ -128,8 +164,6 @@ update = function ()
 {
 	canvas.clearRect(0,0,WEIGHT,HEIGHT);
 
-	//draw map
-	drawMap();
 
 	player.update();
 
@@ -146,15 +180,11 @@ startNewGame = function()
 	frameCount = 0;
 	
 	score = 0;
+    
 }
 
 player = Player();
 
 //set the update speed
 setInterval(update,50);
-
-//draw the game map
-drawMap = function()
-{
-	canvas.drawImage(image.map,0,0);
-}
+*/
