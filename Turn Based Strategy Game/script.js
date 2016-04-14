@@ -1,12 +1,53 @@
-window.onload = function()
+var canvas;
+var context;
+
+canvas = document.getElementById("canvas");
+    
+context = canvas.getContext("2d");
+
+
+//settings class
+var settings = {
+    rows: 10,
+    collumns: 10,
+    width: 30,
+    height: 30,
+    fps: 30
+};
+
+var box;
+
+function init()
 {
-    var canvas = document.getElementById("canvas");
     
-    var context = canvas.getContext("2d");
+    box = new Image();
+    box.src = "../images/book.png"
     
-    context.fillRect(50,50,300,300);
+    drawCanvas();
 }
 
+function drawCanvas()
+{
+    context.clearRect(0,0,400,400);
+    
+    context.save();
+    
+    for(var i = 0; i < settings.rows; i++)
+    {
+        for(var j = 0; j < settings.collumns; j++)
+        {
+            var x = j*settings.width;
+            var y = i*settings.height;
+            
+            //draw the grid
+            context.fillRect(x,y,25,25);
+        }
+    }
+    
+    context.restore();
+}
+
+init();
 /*
 function drawCheckeredBackground(can, nRow, nCol) {
     var ctx = can.getContext("2d");
