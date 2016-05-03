@@ -13,25 +13,8 @@ var score = 0;
 
 var player;
 
-var image = {};
-
-image.player = new Image();
-image.player.src = "../images/player.png";
-
-image.enemy = new Image();
-image.enemy.src = "../images/player.png";
-
-image.bullet = new Image();
-image.bullet.src = "../images/bullet.png";
-
-image.upgrade1 = new Image();
-image.upgrade1.src = "../images/upgrade1.png";
-
-image.upgrade2 = new Image();
-image.upgrade2.src = "../images/upgrade2.png";
-
 //enemy constructor
-Entity = function (type,id,x,y,spdX,spdY,width,height,image)
+Entity = function (type,id,x,y,spdX,spdY,width,height,color)
 {
 
 	var self = {
@@ -42,7 +25,7 @@ Entity = function (type,id,x,y,spdX,spdY,width,height,image)
 		spdY:spdY,
 		width:width,
 		height:height,
-		image:image,
+		color:color,
 	}
 
 	self.update = function()
@@ -72,14 +55,8 @@ Entity = function (type,id,x,y,spdX,spdY,width,height,image)
 
 	self.drawEntity = function()
 	{
-		canvas.save();
-		//update the position of the image
-		var x = self.x-self.width/2;
-		var y = self.y-self.height/2;
-
-		canvas.drawImage(self.image,x,y);
-		
-		canvas.fillStyle = self.image;
+		canvas.fillStyle = self.color;
+		canvas.fillRect(self.x-self.width/2,self.y-self.height/2,self.width,self.height);
 	}
 
 	//call the functions to update the self
@@ -89,9 +66,9 @@ Entity = function (type,id,x,y,spdX,spdY,width,height,image)
 	
 }
 
-Actor = function(type,id,x,y,spdX,spdY,width,height,image,hp,attackSpd)
+Actor = function(type,id,x,y,spdX,spdY,width,height,color,hp,attackSpd)
 {
-	var self = Entity(type,id,x,y,spdX,spdY,width,height,image);
+	var self = Entity(type,id,x,y,spdX,spdY,width,height,color);
 
 	//save content of update before calling it
 	var super_update = self.update;
@@ -137,7 +114,7 @@ Actor = function(type,id,x,y,spdX,spdY,width,height,image,hp,attackSpd)
 
 Player = function()
 {
-	var self = Actor("player","myID",50,40,30,5,20,20,image.player,10,1);
+	var self = Actor("player","myID",50,40,30,5,20,20,"green",10,1);
 
 	self.updateEntityPosition = function()
 	{
