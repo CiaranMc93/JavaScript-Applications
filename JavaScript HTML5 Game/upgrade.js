@@ -27,16 +27,16 @@ randomUpgradeGeneration = function()
 	{
 		//score category
 		var category = 'score';
-
-		//generate upgrade
-		Upgrade(id,x,y,spdX,spdY,width,height,category,image.upgrade1);
+		var image = image.upgrade1;
 	}
 	else
 	{
 		//speed category
 		var category = 'speed';
-		//generate upgrade
-		Upgrade(id,x,y,spdX,spdY,width,height,category,image.upgrade2);
+		var image = image.upgrade2;
 	}
+
+	//generate enemy
+	Upgrade(id,x,y,spdX,spdY,width,height,category,image);
 
 }

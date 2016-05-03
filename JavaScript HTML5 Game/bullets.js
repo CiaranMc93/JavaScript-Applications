@@ -16,8 +16,8 @@ randomBulletGeneration = function(entity,overwriteAngle)
 {
 	var x = entity.x;
 	var y = entity.y;
-	var height = 32;
-	var width = 32;
+	var height = 5;
+	var width = 5;
 	var id = Math.random();
 	//get an angle between 0 and 360
 	var angle = entity.aimAngle;
