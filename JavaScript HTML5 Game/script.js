@@ -7,16 +7,17 @@ var HEIGHT = 500;
 var WEIGHT = 500;
 var message = 'Bouncing';
 var timeWhenGameStarted = Date.now();
-
 var frameCount = 0;
 var score = 0;
-
+//set the level to be 0 at start
+var level = 0;	
 var player;
 
-//enemy constructor
+//entity constructor
 Entity = function (type,id,x,y,spdX,spdY,width,height,color)
 {
 
+	//create the bones of each entity
 	var self = {
 		type:type,
 		x:x,
@@ -28,6 +29,7 @@ Entity = function (type,id,x,y,spdX,spdY,width,height,color)
 		color:color,
 	}
 
+	//update the entity
 	self.update = function()
 	{
 		self.updateEntityPosition();
@@ -53,6 +55,7 @@ Entity = function (type,id,x,y,spdX,spdY,width,height,color)
 		}
 	}
 
+	//draw the entity
 	self.drawEntity = function()
 	{
 		canvas.fillStyle = self.color;
@@ -88,21 +91,6 @@ Actor = function(type,id,x,y,spdX,spdY,width,height,color,hp,attackSpd)
 		}
 	}
 
-	self.performSpecialAttack = function()
-	{
-		if(self.counter > 50)
-		{
-			for(var i = 0; i <= 360;i++)
-			{
-				//attack from all directions
-				randomBulletGeneration(self,i);
-			}
-			
-			self.attackCounter = 0;
-		}
-
-		mouse.preventDefault();
-	}
 
 	self.attackSpd = attackSpd;
 	self.hp = hp;
@@ -168,13 +156,73 @@ update = function ()
 {
 	canvas.clearRect(0,0,WEIGHT,HEIGHT);
 
+	//increase framecount and score
 	frameCount++;
 	score++;
 
-	//create a new random enemy every 4 seconds
-	if(frameCount % 100 === 0) //4 seconds
+	//increase the levels and the difficulty
+	if(level == 0)
 	{
-		randomGeneration();
+		//create a new random enemy every 4 seconds while the score is less than 10000
+		if(frameCount % 100 === 0) //4 seconds
+		{
+			//basic enemy generation
+			randomGeneration();
+		}
+
+		//increment level
+		if(score > 10000)
+		{
+			level++;
+		}
+	}
+	else if(level == 1)
+	{
+		//create a new random enemy every 3 seconds while the score is less than 10000
+		if(frameCount % 75 === 0) //3 seconds
+		{
+			//basic enemy generation
+			randomGeneration();
+			randomGeneration();
+			
+		}
+
+		//increment level
+		if(score > 20000)
+		{
+			level++;
+		}
+	}
+	else if(level == 2)
+	{
+		//create a new random enemy every 2 seconds while the score is less than 10000
+		if(frameCount % 50 === 0) //2 seconds
+		{
+			//basic enemy generation
+			randomGeneration();
+			randomGeneration();
+			randomGeneration();
+			randomGeneration();
+			
+		}
+
+		//increment level
+		if(score > 30000)
+		{
+			level++;
+		}
+	}
+	else if(level == 3)
+	{
+		//create a new random enemy every 1 seconds while the score is less than 10000
+		if(frameCount % 25 === 0) //1 seconds
+		{
+			//basic enemy generation
+			randomGeneration();
+			randomGeneration();
+			randomGeneration();
+			randomGeneration();
+		}
 	}
 
 	player.counter += player.attackSpd;
@@ -274,6 +322,7 @@ update = function ()
 		//count how long the player survived then reset the health and the timer
 		var surviveCount = Date.now() - timeWhenGameStarted;
 		console.log("You Lost and survived for " + surviveCount + " ms.");
+		level = 0;
 		
 		startNewGame();
 	}
@@ -282,13 +331,21 @@ update = function ()
 
 	canvas.fillStyle = "red";
 	canvas.fillText(player.hp + " Hp",0,30);
+	canvas.fillText("Level: " + level,100,30);
 	canvas.fillText("Score: " + score,WEIGHT-185,30);
 }
 
 //on right click
 document.oncontextmenu = function(mouse)
 {
-	performSpecialAttack(player);
+	for(var i = 0; i <= 360;i++)
+	{
+		//attack from all directions
+		randomBulletGeneration(self,i);
+	}
+
+	mouse.preventDefault();
+
 }
 
 //reset the game
