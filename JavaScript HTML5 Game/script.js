@@ -13,6 +13,9 @@ var score = 0;
 var level = 0;	
 var player;
 
+//player statistics
+var enemiesKilled = 0;
+
 //entity constructor
 Entity = function (type,id,x,y,spdX,spdY,width,height,color)
 {
@@ -142,7 +145,6 @@ Player = function()
 	return self;
 }
 
-
 //mouse click
 document.onclick = function()
 {
@@ -184,7 +186,6 @@ update = function ()
 			//basic enemy generation
 			randomGeneration();
 			randomGeneration();
-			
 		}
 
 		//increment level
@@ -203,7 +204,6 @@ update = function ()
 			randomGeneration();
 			randomGeneration();
 			randomGeneration();
-			
 		}
 
 		//increment level
@@ -258,6 +258,9 @@ update = function ()
 				delete enemyList[key2];
 				//increment score
 				score += 500;
+				//enemies killed
+				enemiesKilled++;
+
 				break;
 			}
 		}//end for
@@ -278,10 +281,22 @@ update = function ()
 	//for each upgrade in the list
 	for(var key in upgradeList)
 	{
+		//remove upgrade flag
+		var toRemove = false;
+
 		//get each upgrade
 		upgradeList[key].update();
 
-		//test the collisions
+		//count a timer for each upgrade
+		upgradeList[key].timer++;
+
+		//if the upgrade timer is 4 seconds 25x4 = 100
+		if(upgradeList[key].timer === 100)
+		{
+			toRemove = true;
+		}
+
+		//test if there is a collision between the player and an upgrade
 		var collision = testCollision(player,upgradeList[key]);
 
 		if(collision)
@@ -291,14 +306,22 @@ update = function ()
 			{
 				score += 1000;
 			}
-			else
+			else if(upgradeList[key].category === 'score' && level == 1)
 			{
-				player.attackSpd += 3;
+				score += 2000;
+			}
+			else if(upgradeList[key].category === 'ringAttack')
+			{
+				//enable a ring attack
+				ringAttack = true;
 			}
 
-			//decrease the health
-			score += 1000;
 			//remove upgrade from the list
+			delete upgradeList[key];
+		}
+
+		if(toRemove)
+		{
 			delete upgradeList[key];
 		}
 	}
@@ -338,21 +361,29 @@ update = function ()
 //on right click
 document.oncontextmenu = function(mouse)
 {
-	for(var i = 0; i <= 360;i++)
+	//if the player gets a green box(ring attack) they can defeat all enemies at once.
+	if(ringAttack == true)
 	{
-		//attack from all directions
-		randomBulletGeneration(self,i);
+		for(var i = 0; i <= 360;i++)
+		{
+			//attack from all directions
+			randomBulletGeneration(player,i);
+		}
+
+		//reset the ring attack
+		ringAttack = false;
 	}
 
 	mouse.preventDefault();
-
 }
 
 //reset the game
 startNewGame = function()
 {
+	//start a new game
 	player.hp = 10;
 	timeWhenGameStarted = Date.now();
+	enemiesKilled = 0;
 	frameCount = 0;
 	enemyList = {};
 	upgradeList = {};
@@ -366,6 +397,7 @@ startNewGame = function()
 	randomGeneration();
 }
 
+//create the player
 player = Player();
 
 //set the update speed

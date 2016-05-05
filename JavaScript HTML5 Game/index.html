@@ -1,9 +1,15 @@
 <!-- Create a canvas -->
 
-<link rel="stylesheet" type="text/css" href="style.css"/>
+<style>
+    #container { position: absolute; }
+    #stats { position: absolute; top: 0; left: 0; }
+    #canvas { position: absolute; top: 100; left: 0; }
+</style>
 
-<canvas id="canvas" width="500" height="500" style="border: 1px solid #000000;"></canvas>
-
+<div id="container">
+	<canvas class="canvas" id="stats" width="500" height="100" style="border: 2px solid #000000;"></canvas>
+	<canvas class="canvas" id="canvas" width="500" height="500" style="border: 1px solid #000000;"></canvas>
+</div>
 
 
 <script src="script.js" type="text/javascript"></script>

@@ -1,6 +1,9 @@
 //handle the upgrades
 upgradeList = {};
 
+//upgrade functionality
+var ringAttack = false;
+
 //enemy constructor
 Upgrade = function (id,x,y,spdX,spdY,width,height,category,color)
 {
@@ -8,6 +11,7 @@ Upgrade = function (id,x,y,spdX,spdY,width,height,category,color)
 	var self = Entity("upgrade",id,x,y,spdX,spdY,width,height,color);
 	
 	self.category = category;
+	self.timer = 0;
 
 	upgradeList[id] = self;
 }
@@ -32,7 +36,7 @@ randomUpgradeGeneration = function()
 	else
 	{
 		//speed category
-		var category = 'speed';
+		var category = 'ringAttack';
 		var color = 'green';
 	}
 

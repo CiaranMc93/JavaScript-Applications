@@ -2,12 +2,13 @@
 bulletList = {};
 
 //enemy constructor
-Bullets = function (id,x,y,spdX,spdY,width,height)
+Bullets = function (id,x,y,spdX,spdY,width,height,aimAngle)
 {
 
 	var self = Entity("bullet",id,x,y,spdX,spdY,width,height,"purple");
 
 	self.timer = 0;
+	self.aimAngle = aimAngle;
 
 	bulletList[id] = self;
 }
@@ -31,6 +32,6 @@ randomBulletGeneration = function(entity,overwriteAngle)
 	var spdY = Math.sin((angle/180)* Math.PI)*5;
 
 	//generate bullet
-	Bullets(id,x,y,spdX,spdY,width,height);
+	Bullets(id,x,y,spdX,spdY,width,height,angle);
 
 }
