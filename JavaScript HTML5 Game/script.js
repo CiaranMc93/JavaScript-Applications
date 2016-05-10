@@ -1,10 +1,21 @@
+var w = window,
+d = document,
+e = d.documentElement,
+g = d.getElementsByTagName('body')[0],
+x = w.innerWidth || e.clientWidth || g.clientWidth,
+y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+
+var canvasVariables = document.getElementById("canvas");
 var canvas = document.getElementById("canvas").getContext("2d");
 
 canvas.font = ("30px Arial");
 
+canvasVariables.width = x - 30;
+canvasVariables.height = y - 30;
+
 //global variables
-var HEIGHT = 500;
-var WEIGHT = 500;
+var HEIGHT = canvasVariables.height;
+var WEIGHT = canvasVariables.width;
 var message = 'Bouncing';
 var timeWhenGameStarted = Date.now();
 var frameCount = 0;
@@ -12,6 +23,9 @@ var score = 0;
 //set the level to be 0 at start
 var level = 0;	
 var player;
+var playerIsHit = false;
+//if the player is hit, the player can regroup
+var regroupTime = 0;
 
 //player statistics
 var enemiesKilled = 0;
@@ -105,7 +119,7 @@ Actor = function(type,id,x,y,spdX,spdY,width,height,color,hp,attackSpd)
 
 Player = function()
 {
-	var self = Actor("player","myID",50,40,30,5,20,20,"green",10,1);
+	var self = Actor("player","myID",50,40,30,5,20,20,"green",100,1);
 
 	self.updateEntityPosition = function()
 	{
@@ -333,10 +347,36 @@ update = function ()
 
 		var collision = testCollision(player,enemyList[key]);
 
-		if(collision)
+		//check the flag
+		if(playerIsHit == true)
+		{
+			//increment time.
+			regroupTime++;
+
+			/*every second, flash the player on the screen 
+			if(regroupTime % 25 === 0)
+			{
+				Player.color = 'white'
+			}*/
+
+			//if 2 seconds pass, time is over.
+			if(regroupTime > 75)
+			{
+				//reset hit
+				playerIsHit = false;
+				//reset timer
+				regroupTime = 0;
+			}
+		}
+
+		//check if there is a collision
+		if(collision && playerIsHit == false)
 		{
 			//decrease the health
-			player.hp = player.hp - 1;
+			player.hp = player.hp - 10;
+
+			//if the player is hit, let them regroup.
+			playerIsHit = true;
 		}
 	}
 
@@ -374,14 +414,14 @@ document.oncontextmenu = function(mouse)
 		ringAttack = false;
 	}
 
-	mouse.preventDefault();
+	
 }
 
 //reset the game
 startNewGame = function()
 {
 	//start a new game
-	player.hp = 10;
+	player.hp = 100;
 	timeWhenGameStarted = Date.now();
 	enemiesKilled = 0;
 	frameCount = 0;
