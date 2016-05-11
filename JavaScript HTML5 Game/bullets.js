@@ -27,11 +27,21 @@ randomBulletGeneration = function(entity,overwriteAngle)
 	{
 		angle = overwriteAngle;
 	}
+
 	//change theangle into radians so it can be calculated correctly
-	var spdX= Math.cos((angle/180)* Math.PI)*5;
+	var spdX = Math.cos((angle/180)* Math.PI)*5;
 	var spdY = Math.sin((angle/180)* Math.PI)*5;
 
+	var angX = Math.cos(angle/180);
+	var angY = Math.sin(angle/180);
+
+	var piX = angX*Math.PI;
+	var piY = angY*Math.PI;
+
+	var x5 = piX*5;
+	var y5 = piY*5;
+
 	//generate bullet
-	Bullets(id,x,y,spdX,spdY,width,height,angle);
+	Bullets(id,x,y,x5,y5,width,height,angle);
 
 }

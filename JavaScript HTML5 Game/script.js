@@ -26,6 +26,9 @@ var player;
 var playerIsHit = false;
 //if the player is hit, the player can regroup
 var regroupTime = 0;
+//control bullet usage
+var bulletMax = 0;
+var bulletMaxOutTime = 0;
 
 //player statistics
 var enemiesKilled = 0;
@@ -162,6 +165,17 @@ Player = function()
 //mouse click
 document.onclick = function()
 {
+	/*increment the bullets
+	bulletMax++;
+
+	//check if the user used too many bullets
+	if(bulletMax == 20)
+	{
+		bulletMaxOutTime;
+	}
+
+	var i = Math.floor(10 * Math.random());*/
+
 	randomBulletGeneration(player);
 }
 
