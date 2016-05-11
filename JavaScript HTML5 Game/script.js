@@ -1,3 +1,4 @@
+//set the window height/width
 var w = window,
 d = document,
 e = d.documentElement,
@@ -8,7 +9,14 @@ y = w.innerHeight|| e.clientHeight|| g.clientHeight;
 var canvasVariables = document.getElementById("canvas");
 var canvas = document.getElementById("canvas").getContext("2d");
 
-canvas.font = ("30px Arial");
+
+if(canvasVariables.width<480){
+    canvas.font='60px verdana';
+}else if(canvasVariables.width<768){
+    canvas.font='80px verdana';
+}else{
+    canvas.font='90px verdana';
+} 
 
 canvasVariables.width = x - 30;
 canvasVariables.height = y - 30;
@@ -24,14 +32,11 @@ var score = 0;
 var level = 0;	
 var player;
 var playerIsHit = false;
-//if the player is hit, the player can regroup
-var regroupTime = 0;
-//control bullet usage
-var bulletMax = 0;
-var bulletMaxOutTime = 0;
 
 //player statistics
 var enemiesKilled = 0;
+//bullets fired
+var bulletsLeft = 0;
 
 //entity constructor
 Entity = function (type,id,x,y,spdX,spdY,width,height,color)
@@ -165,18 +170,14 @@ Player = function()
 //mouse click
 document.onclick = function()
 {
-	/*increment the bullets
-	bulletMax++;
+	//increment the bullets
+	bulletsLeft++;
 
 	//check if the user used too many bullets
-	if(bulletMax == 20)
+	if(bulletsLeft != 200)
 	{
-		bulletMaxOutTime;
+		randomBulletGeneration(player);
 	}
-
-	var i = Math.floor(10 * Math.random());*/
-
-	randomBulletGeneration(player);
 }
 
 counter = 0;
@@ -361,28 +362,6 @@ update = function ()
 
 		var collision = testCollision(player,enemyList[key]);
 
-		//check the flag
-		if(playerIsHit == true)
-		{
-			//increment time.
-			regroupTime++;
-
-			/*every second, flash the player on the screen 
-			if(regroupTime % 25 === 0)
-			{
-				Player.color = 'white'
-			}*/
-
-			//if 2 seconds pass, time is over.
-			if(regroupTime > 75)
-			{
-				//reset hit
-				playerIsHit = false;
-				//reset timer
-				regroupTime = 0;
-			}
-		}
-
 		//check if there is a collision
 		if(collision && playerIsHit == false)
 		{
@@ -443,6 +422,7 @@ startNewGame = function()
 	upgradeList = {};
 	bulletList = {};
 	score = 0;
+	bulletsLeft = 0;
 
 	//create new enemies
 	randomGeneration();

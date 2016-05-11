@@ -46,9 +46,7 @@ document.onmousemove = function(mouse)
 	mouseX -= player.x;
 	mouseY -= player.y;
 
-	player.aimAngle = Math.atan2(mouseY,mouseX);
-
-	player.aimAngle*5;
+	player.aimAngle = Math.atan2(mouseY,mouseX) / Math.PI * 180;
 
 	/*
 	if(mouseX < player.width/2)
