@@ -4,11 +4,14 @@
 </script>
 <html>
 <body>
-	<div id="homeScreen">
-	
+	<div id="homeScreen" style="display:inline-block">
+		<button id="startGame" onclick="startNewGame()"><h1>Start Game</h1></button>
 	</div>
-	<div id="container">
+	<div id="game" style="display:none">
 		<canvas class="canvas" id="canvas" style="border: 1px solid #000000;"></canvas>
+	</div>
+	<div id="gameOver" style="display:none">
+		<h1> Statistics </h1>
 	</div>
 
 </body>

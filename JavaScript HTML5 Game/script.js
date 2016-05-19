@@ -9,6 +9,11 @@ y = w.innerHeight|| e.clientHeight|| g.clientHeight;
 var canvasVariables = document.getElementById("canvas");
 var canvas = document.getElementById("canvas").getContext("2d");
 
+//get home screen/game over screen
+var gameOver = document.getElementById("gameOver");
+var game = document.getElementById("game");
+var homeScreen = document.getElementById("homeScreen");
+
 
 canvasVariables.width = x - 30;
 canvasVariables.height = y - 30;
@@ -18,7 +23,8 @@ if(canvasVariables.width<480)
 {
     canvas.font='10px verdana';
 
-}else if(canvasVariables.width<768)
+}
+else if(canvasVariables.width<768)
 {
     canvas.font='30px verdana';
 }
@@ -39,6 +45,9 @@ var level = 0;
 var player;
 var playerIsHit = false;
 var hitTimer = 0;
+
+//game over flag
+var gameOverFlag = false;
 
 //player statistics
 var enemiesKilled = 0;
@@ -395,10 +404,18 @@ update = function ()
 	{
 		//count how long the player survived then reset the health and the timer
 		var surviveCount = Date.now() - timeWhenGameStarted;
-		console.log("You Lost and survived for " + surviveCount + " ms.");
-		level = 0;
-		
-		startNewGame();
+
+		//when the player loses their health, show their statistics
+		game.style.display = 'none';
+		gameOver.style.display = 'inline-block';
+
+		if(!gameOverFlag)
+		{	
+			//set game over flag to be true
+			gameOverFlag = true;
+			//display stats
+			statistics();
+		}
 	}
 
 	player.update();
@@ -428,9 +445,25 @@ document.oncontextmenu = function(mouse)
 	
 }
 
+statistics = function()
+{
+	//display stats
+	gameOver.innerHTML += '<h3>' + 'Enemies Killed: ' + enemiesKilled + '</h3>';
+	gameOver.innerHTML += '</br>';
+	gameOver.innerHTML += '<h3>' + 'Level Reached: ' + level + '</h3>';
+	gameOver.innerHTML += '</br>';
+	gameOver.innerHTML += '<h3>' + 'Score: ' + score + '</h3>';
+	gameOver.innerHTML += '</br>';
+	gameOver.innerHTML += '<button onclick="startNewGame()">' + '<h1>' + 'Start New Game?' + '</h1>' + '</button>';
+}
+
 //reset the game
 startNewGame = function()
 {
+	homeScreen.style.display = 'none'
+	game.style.display = 'inline-block';
+	gameOver.style.display = 'none';
+
 	//start a new game
 	player.hp = 100;
 	timeWhenGameStarted = Date.now();
@@ -441,6 +474,8 @@ startNewGame = function()
 	bulletList = {};
 	score = 0;
 	bulletsLeft = 0;
+	level = 0;
+	gameOverFlag = false;
 
 	//create new enemies
 	randomGeneration();
