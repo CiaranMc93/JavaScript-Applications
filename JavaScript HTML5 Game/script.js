@@ -10,16 +10,22 @@ var canvasVariables = document.getElementById("canvas");
 var canvas = document.getElementById("canvas").getContext("2d");
 
 
-if(canvasVariables.width<480){
-    canvas.font='60px verdana';
-}else if(canvasVariables.width<768){
-    canvas.font='80px verdana';
-}else{
-    canvas.font='90px verdana';
-} 
-
 canvasVariables.width = x - 30;
 canvasVariables.height = y - 30;
+
+//change the font sizes accordingly.
+if(canvasVariables.width<480)
+{
+    canvas.font='10px verdana';
+
+}else if(canvasVariables.width<768)
+{
+    canvas.font='30px verdana';
+}
+else
+{
+    canvas.font='40px verdana';
+} 
 
 //global variables
 var HEIGHT = canvasVariables.height;
@@ -32,6 +38,7 @@ var score = 0;
 var level = 0;	
 var player;
 var playerIsHit = false;
+var hitTimer = 0;
 
 //player statistics
 var enemiesKilled = 0;
@@ -362,14 +369,25 @@ update = function ()
 
 		var collision = testCollision(player,enemyList[key]);
 
+		hitTimer++;
+
 		//check if there is a collision
 		if(collision && playerIsHit == false)
 		{
+			//reset hit Timer
+			hitTimer = 0;
+
 			//decrease the health
 			player.hp = player.hp - 10;
 
 			//if the player is hit, let them regroup.
 			playerIsHit = true;
+		}
+
+		//hit timer is equal to 3 seconds (25 frames per second)
+		if(hitTimer === 75 && playerIsHit === true)
+		{
+			playerIsHit = false;
 		}
 	}
 
@@ -387,8 +405,8 @@ update = function ()
 
 	canvas.fillStyle = "red";
 	canvas.fillText(player.hp + " Hp",0,30);
-	canvas.fillText("Level: " + level,100,30);
-	canvas.fillText("Score: " + score,WEIGHT-185,30);
+	canvas.fillText("Level: " + level,300,30);
+	canvas.fillText("Score: " + score,WEIGHT-300,30);
 }
 
 //on right click
