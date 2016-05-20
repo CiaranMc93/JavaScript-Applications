@@ -24,21 +24,21 @@ randomGeneration = function()
 	var id = Math.random();
 
 	//increasing difficulty as it progresses
-	if(level == 1)
+	if(STATS.level == 1)
 	{
 		var height = 45;
 		var width = 45;
 		var spdX = 5 + Math.random()* 10;
 		var spdY = 5 + Math.random()* 10;
 	}
-	else if(level == 2)
+	else if(STATS.level == 2)
 	{
 		var height = 35;
 		var width = 35;
 		var spdX = 5 + Math.random()* 10;
 		var spdY = 5 + Math.random()* 10;
 	}
-	else if(level == 3)
+	else if(STATS.level == 3)
 	{
 		var height = 25;
 		var width = 25;

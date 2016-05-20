@@ -25,19 +25,27 @@ randomUpgradeGeneration = function()
 	var id = Math.random();
 	var spdX= 0;
 	var spdY = 0;
+	//get a random whole number between 1 and 3
+	var random = Math.floor(Math.random() * 3) + 1
 
 	//high or low category
-	if(Math.random()<0.5)
+	if(random === 1)
 	{
 		//score category
 		var category = 'score';
 		var color = 'red';
 	}
-	else
+	else if(random === 2)
 	{
-		//speed category
+		//ring attack category
 		var category = 'ringAttack';
 		var color = 'green';
+	}
+	else if(random === 3)
+	{
+		//speed category
+		var category = 'reload';
+		var color = 'purple';
 	}
 
 	//generate enemy

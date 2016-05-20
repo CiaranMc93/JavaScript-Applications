@@ -39,9 +39,7 @@ var WEIGHT = canvasVariables.width;
 var message = 'Bouncing';
 var timeWhenGameStarted = Date.now();
 var frameCount = 0;
-var score = 0;
-//set the level to be 0 at start
-var level = 0;	
+//set the leve to be 0 at start
 var player;
 var playerIsHit = false;
 var hitTimer = 0;
@@ -49,10 +47,17 @@ var hitTimer = 0;
 //game over flag
 var gameOverFlag = false;
 
-//player statistics
-var enemiesKilled = 0;
-//bullets fired
-var bulletsLeft = 0;
+STATS = {
+	level:0,
+	score:0,
+	enemiesKilled:0,
+	bulletsFired:200,
+	timesHit:0,
+	specialAttacks:0,
+	gotUpgrade:0,
+	healthRecovered:0,
+
+}
 
 //entity constructor
 Entity = function (type,id,x,y,spdX,spdY,width,height,color)
@@ -186,11 +191,11 @@ Player = function()
 //mouse click
 document.onclick = function()
 {
-	//increment the bullets
-	bulletsLeft++;
+	//decrement the bullets
+	STATS.bulletsFired--;
 
 	//check if the user used too many bullets
-	if(bulletsLeft != 200)
+	if(STATS.bulletsFired >= 0)
 	{
 		randomBulletGeneration(player);
 	}
@@ -205,10 +210,10 @@ update = function ()
 
 	//increase framecount and score
 	frameCount++;
-	score++;
+	STATS.score++;
 
-	//increase the levels and the difficulty
-	if(level == 0)
+	//increase the STATS.levels and the difficulty
+	if(STATS.level == 0)
 	{
 		//create a new random enemy every 4 seconds while the score is less than 10000
 		if(frameCount % 100 === 0) //4 seconds
@@ -217,13 +222,13 @@ update = function ()
 			randomGeneration();
 		}
 
-		//increment level
-		if(score > 10000)
+		//increment STATS.level
+		if(STATS.score > 10000)
 		{
-			level++;
+			STATS.level++;
 		}
 	}
-	else if(level == 1)
+	else if(STATS.level == 1)
 	{
 		//create a new random enemy every 3 seconds while the score is less than 10000
 		if(frameCount % 75 === 0) //3 seconds
@@ -233,13 +238,13 @@ update = function ()
 			randomGeneration();
 		}
 
-		//increment level
-		if(score > 20000)
+		//increment STATS.level
+		if(STATS.score > 20000)
 		{
-			level++;
+			STATS.level++;
 		}
 	}
-	else if(level == 2)
+	else if(STATS.level == 2)
 	{
 		//create a new random enemy every 2 seconds while the score is less than 10000
 		if(frameCount % 50 === 0) //2 seconds
@@ -251,13 +256,13 @@ update = function ()
 			randomGeneration();
 		}
 
-		//increment level
-		if(score > 30000)
+		//increment STATS.level
+		if(STATS.score > 30000)
 		{
-			level++;
+			STATS.level++;
 		}
 	}
-	else if(level == 3)
+	else if(STATS.level == 3)
 	{
 		//create a new random enemy every 1 seconds while the score is less than 10000
 		if(frameCount % 25 === 0) //1 seconds
@@ -302,9 +307,9 @@ update = function ()
 				delete bulletList[key];
 				delete enemyList[key2];
 				//increment score
-				score += 500;
+				STATS.score += 500;
 				//enemies killed
-				enemiesKilled++;
+				STATS.enemiesKilled++;
 
 				break;
 			}
@@ -349,16 +354,21 @@ update = function ()
 			//different category of upgrade is defined
 			if(upgradeList[key].category === 'score')
 			{
-				score += 1000;
+				STATS.score += 1000;
 			}
-			else if(upgradeList[key].category === 'score' && level == 1)
+			else if(upgradeList[key].category === 'score' && STATS.level == 1)
 			{
-				score += 2000;
+				STATS.score += 2000;
 			}
 			else if(upgradeList[key].category === 'ringAttack')
 			{
 				//enable a ring attack
 				ringAttack = true;
+			}
+			else if(upgradeList[key].category === 'reload')
+			{
+				//reload the bullets by 10
+				STATS.bulletsFired += 20;
 			}
 
 			//remove upgrade from the list
@@ -422,8 +432,8 @@ update = function ()
 
 	canvas.fillStyle = "red";
 	canvas.fillText(player.hp + " Hp",0,30);
-	canvas.fillText("Level: " + level,300,30);
-	canvas.fillText("Score: " + score,WEIGHT-300,30);
+	canvas.fillText("Level: " + STATS.level,300,30);
+	canvas.fillText("Score: " + STATS.score,WEIGHT-300,30);
 }
 
 //on right click
@@ -448,11 +458,11 @@ document.oncontextmenu = function(mouse)
 statistics = function()
 {
 	//display stats
-	gameOver.innerHTML += '<h3>' + 'Enemies Killed: ' + enemiesKilled + '</h3>';
+	gameOver.innerHTML += '<h3>' + 'Enemies Killed: ' + STATS.enemiesKilled + '</h3>';
 	gameOver.innerHTML += '</br>';
-	gameOver.innerHTML += '<h3>' + 'Level Reached: ' + level + '</h3>';
+	gameOver.innerHTML += '<h3>' + 'STATS.level Reached: ' + STATS.level + '</h3>';
 	gameOver.innerHTML += '</br>';
-	gameOver.innerHTML += '<h3>' + 'Score: ' + score + '</h3>';
+	gameOver.innerHTML += '<h3>' + 'Score: ' + STATS.score + '</h3>';
 	gameOver.innerHTML += '</br>';
 	gameOver.innerHTML += '<button onclick="startNewGame()">' + '<h1>' + 'Start New Game?' + '</h1>' + '</button>';
 }
@@ -467,14 +477,14 @@ startNewGame = function()
 	//start a new game
 	player.hp = 100;
 	timeWhenGameStarted = Date.now();
-	enemiesKilled = 0;
+	STATS.enemiesKilled = 0;
 	frameCount = 0;
 	enemyList = {};
 	upgradeList = {};
 	bulletList = {};
-	score = 0;
+	STATS.score = 0;
 	bulletsLeft = 0;
-	level = 0;
+	STATS.level = 0;
 	gameOverFlag = false;
 
 	//create new enemies
