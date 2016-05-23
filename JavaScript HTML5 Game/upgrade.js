@@ -26,14 +26,14 @@ randomUpgradeGeneration = function()
 	var spdX= 0;
 	var spdY = 0;
 	//get a random whole number between 1 and 3
-	var random = Math.floor(Math.random() * 3) + 1
+	var random = Math.floor(Math.random() * 4) + 1
 
 	//high or low category
 	if(random === 1)
 	{
 		//score category
 		var category = 'score';
-		var color = 'red';
+		var color = 'black';
 	}
 	else if(random === 2)
 	{
@@ -46,6 +46,12 @@ randomUpgradeGeneration = function()
 		//speed category
 		var category = 'reload';
 		var color = 'purple';
+	}
+	else if(random === 4)
+	{
+		//speed category
+		var category = 'health';
+		var color = 'red';
 	}
 
 	//generate enemy

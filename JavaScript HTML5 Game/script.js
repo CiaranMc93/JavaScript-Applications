@@ -56,6 +56,7 @@ STATS = {
 	specialAttacks:0,
 	gotUpgrade:0,
 	healthRecovered:0,
+	timeLastHit:0,
 
 }
 
@@ -270,6 +271,20 @@ update = function ()
 			//basic enemy generation
 			randomGeneration();
 			randomGeneration();
+		}
+
+		//increment STATS.level
+		if(STATS.score > 50000)
+		{
+			STATS.level++;
+		}
+	}
+	else if(STATS.level == 4)
+	{
+		//create random enemies less than 1 second
+		if(frameCount % 10 === 0) //less than 1 second
+		{
+			//basic enemy generation
 			randomGeneration();
 			randomGeneration();
 		}
@@ -323,7 +338,7 @@ update = function ()
 	}//end for
 
 	//create random upgrades every 6 seconds
-	if(frameCount % 150 === 0) //4 seconds
+	if(frameCount % 150 === 0) //6 seconds
 	{
 		randomUpgradeGeneration();
 	}
@@ -351,6 +366,9 @@ update = function ()
 
 		if(collision)
 		{
+			//update the upgrade stats
+			STATS.gotUpgrade++;
+
 			//different category of upgrade is defined
 			if(upgradeList[key].category === 'score')
 			{
@@ -370,11 +388,17 @@ update = function ()
 				//reload the bullets by 10
 				STATS.bulletsFired += 20;
 			}
+			else if(upgradeList[key].category === 'health')
+			{
+				//health is restored by 10
+				player.hp += 10;
+			}
 
 			//remove upgrade from the list
 			delete upgradeList[key];
 		}
 
+		//remove the upgrade from the list
 		if(toRemove)
 		{
 			delete upgradeList[key];
@@ -384,8 +408,10 @@ update = function ()
 	//for each enemy 
 	for(var key in enemyList)
 	{
+		//update the enemies
 		enemyList[key].update();
 
+		//test collision with the player
 		var collision = testCollision(player,enemyList[key]);
 
 		hitTimer++;
@@ -399,12 +425,15 @@ update = function ()
 			//decrease the health
 			player.hp = player.hp - 10;
 
+			//player hit counter
+			STATS.timesHit++;
+
 			//if the player is hit, let them regroup.
 			playerIsHit = true;
 		}
 
 		//hit timer is equal to 3 seconds (25 frames per second)
-		if(hitTimer === 75 && playerIsHit === true)
+		if(hitTimer === 100 && playerIsHit === true)
 		{
 			playerIsHit = false;
 		}
@@ -428,6 +457,7 @@ update = function ()
 		}
 	}
 
+	//update the player
 	player.update();
 
 	canvas.fillStyle = "red";
@@ -460,7 +490,11 @@ statistics = function()
 	//display stats
 	gameOver.innerHTML += '<h3>' + 'Enemies Killed: ' + STATS.enemiesKilled + '</h3>';
 	gameOver.innerHTML += '</br>';
-	gameOver.innerHTML += '<h3>' + 'STATS.level Reached: ' + STATS.level + '</h3>';
+	gameOver.innerHTML += '<h3>' + 'Times Hit By Enemy: ' + STATS.timesHit + '</h3>';
+	gameOver.innerHTML += '</br>';
+	gameOver.innerHTML += '<h3>' + 'Upgrades Collected: ' + STATS.gotUpgrade + '</h3>';
+	gameOver.innerHTML += '</br>';
+	gameOver.innerHTML += '<h3>' + 'Level Reached: ' + STATS.level + '</h3>';
 	gameOver.innerHTML += '</br>';
 	gameOver.innerHTML += '<h3>' + 'Score: ' + STATS.score + '</h3>';
 	gameOver.innerHTML += '</br>';
@@ -470,6 +504,7 @@ statistics = function()
 //reset the game
 startNewGame = function()
 {
+	//hide the game screen
 	homeScreen.style.display = 'none'
 	game.style.display = 'inline-block';
 	gameOver.style.display = 'none';
@@ -479,13 +514,17 @@ startNewGame = function()
 	timeWhenGameStarted = Date.now();
 	STATS.enemiesKilled = 0;
 	frameCount = 0;
-	enemyList = {};
-	upgradeList = {};
-	bulletList = {};
 	STATS.score = 0;
 	bulletsLeft = 0;
 	STATS.level = 0;
+	STATS.timesHit = 0;
+	STATS.bulletsFired = 200;
 	gameOverFlag = false;
+
+	//entity lists
+	enemyList = {};
+	upgradeList = {};
+	bulletList = {};
 
 	//create new enemies
 	randomGeneration();
